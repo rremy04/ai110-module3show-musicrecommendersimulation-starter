@@ -21,16 +21,24 @@ Prompts:
 
 ## 3. How the Model Works  
 
-Explain your scoring approach in simple language.  
+The recommender compares every song in the catalog to one description of what the listener wants, gives each song points, and shows the highest scorers.
 
-Prompts:  
+A song earns points in six ways:
 
-- What features of each song are used (genre, energy, mood, etc.)  
-- What user preferences are considered  
-- How does the model turn those into a score  
-- What changes did you make from the starter logic  
+- **Mood:** 2 points if it matches the listener's favorite mood, otherwise none.
+- **Genre:** 1 point if it matches the favorite genre, otherwise none.
+- **Energy:** up to 2 points, more the closer the song's energy is to what the listener wants.
+- **Valence (how bright or dark it sounds):** up to 1 point, using the same closeness idea.
+- **Acousticness (organic vs. electronic):** up to 1 point, using the same closeness idea.
+- **Danceability:** up to half a point, since it mostly repeats energy.
 
-Avoid code here. Pretend you are explaining the idea to a friend who does not program.
+Closeness works like a ruler: a perfect match gets full points, and points shrink as the gap grows. A song that is too low and a song that is too high are treated the same.
+
+Mood counts for more than genre because mood is how a song feels, and people will cross genres to get that feeling. Most genres appear only once in the catalog, so a big genre bonus would just pick that one song.
+
+After scoring every song, the system sorts from highest to lowest, breaks ties alphabetically by title, and returns the top five. Each pick comes with the reasons that earned its points, such as "mood matches: happy (+2.0)".
+
+Changes from the starter: the starter returned the first songs in the file with a placeholder explanation. This version loads the CSV, scores every song, ranks them, and explains each result.
 
 ---
 
